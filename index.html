@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>KL Kahoot</title>
+  <link rel="icon" type="image/png" href="bdb8c701-4b13-44a9-b926-d6f51b681bc7.png" />
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -11,22 +12,27 @@
       margin: 0;
       padding: 40px;
       text-align: center;
+      opacity: 0;
+      animation: fadeIn 1.5s ease forwards;
     }
 
-    .logo {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      width: 100px;
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
 
     .section {
       max-width: 500px;
-      background: #ffffff;
+      background: white;
       padding: 30px;
       margin: 30px auto;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      animation: slideUp 1s ease both;
     }
 
     h1 {
@@ -53,6 +59,10 @@
 
     button:hover {
       background-color: #0056b3;
+    }
+
+    button:active {
+      transform: scale(0.97);
     }
 
     .button {
@@ -102,15 +112,12 @@
 </head>
 <body>
 
-  <!-- Logo -->
-  <img src="Ontwerp zonder titel.png" alt="Logo" class="logo">
-
   <!-- KL Kahoot -->
   <div class="section">
     <h1>KL Kahoot</h1>
     <form id="botForm">
-      <input type="text" id="pin" placeholder="Kahoot PIN (6-7 digits)" required>
-      <input type="text" id="name" placeholder="Bot name (Bot1, Kleine_Lars)" required>
+      <input type="text" id="pin" placeholder="Kahoot PIN (6 cijfers)" required>
+      <input type="text" id="name" placeholder="Bot name (e.g. Bot)" required>
       <input type="number" id="count" placeholder="Number of bots" required min="1" max="100">
       <button type="submit">Launch Bots</button>
     </form>
@@ -147,17 +154,17 @@
       statusDiv.innerHTML = "<p>❌ Socket.io connection not active. Please start your backend!</p>";
     }
 
-    // PIN validatie (6 of 7 cijfers)
+    // PIN validatie
     document.getElementById("pin").addEventListener("input", function () {
       const pin = this.value;
-      if (!/^\d{6,7}$/.test(pin)) {
+      if (!/^\d{6}$/.test(pin)) {
         this.style.border = "2px solid red";
       } else {
         this.style.border = "2px solid green";
       }
     });
 
-    // Bot preview
+    // Bot preview + Random namen
     function updatePreview() {
       const name = document.getElementById("name").value || "Bot";
       const count = parseInt(document.getElementById("count").value || "0");
