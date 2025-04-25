@@ -3,43 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>KL Kahoot</title>
+  <title>Kahoot Bot Launcher & Socials</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(-45deg, #e3f2fd, #fce4ec, #e8f5e9, #fff3e0);
-      background-size: 400% 400%;
-      animation: gradientBG 15s ease infinite;
+      background: white;
       margin: 0;
       padding: 40px;
       text-align: center;
-      opacity: 0;
-      animation: fadeIn 1.5s ease forwards;
     }
 
-    @keyframes gradientBG {
-      0% {background-position: 0% 50%;}
-      50% {background-position: 100% 50%;}
-      100% {background-position: 0% 50%;}
-    }
-
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+    .logo {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 100px;
     }
 
     .section {
       max-width: 500px;
-      background: white;
+      background: #ffffff;
       padding: 30px;
       margin: 30px auto;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      animation: slideUp 1s ease both;
     }
 
     h1 {
@@ -66,10 +53,6 @@
 
     button:hover {
       background-color: #0056b3;
-    }
-
-    button:active {
-      transform: scale(0.97);
     }
 
     .button {
@@ -119,11 +102,14 @@
 </head>
 <body>
 
-  <!-- KL Kahoot -->
+  <!-- Logo -->
+  <img src="Ontwerp zonder titel.png" alt="Logo" class="logo">
+
+  <!-- Kahoot Bot Launcher -->
   <div class="section">
-    <h1>KL Kahoot</h1>
+    <h1>Kahoot Bot Launcher</h1>
     <form id="botForm">
-      <input type="text" id="pin" placeholder="Kahoot PIN (6 cijfers)" required>
+      <input type="text" id="pin" placeholder="Kahoot PIN (6-7 digits)" required>
       <input type="text" id="name" placeholder="Bot name (e.g. Bot)" required>
       <input type="number" id="count" placeholder="Number of bots" required min="1" max="100">
       <button type="submit">Launch Bots</button>
@@ -161,10 +147,10 @@
       statusDiv.innerHTML = "<p>❌ Socket.io connection not active. Please start your backend!</p>";
     }
 
-    // PIN validatie
+    // PIN validatie (6 of 7 cijfers)
     document.getElementById("pin").addEventListener("input", function () {
       const pin = this.value;
-      if (!/^\\d{6}$/.test(pin)) {
+      if (!/^\d{6,7}$/.test(pin)) {
         this.style.border = "2px solid red";
       } else {
         this.style.border = "2px solid green";
