@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>KahootKL</title>
+  <title>Kahoot Bot Launcher & Socials</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -11,13 +11,14 @@
       padding: 40px;
       margin: 0;
       text-align: center;
+      position: relative;
     }
 
     .logo {
       position: absolute;
       top: 20px;
       right: 20px;
-      width: 80px;
+      width: 100px;
       height: auto;
     }
 
@@ -45,7 +46,7 @@
     }
 
     button {
-      background-color: #007bff;
+      background-color: #007BFF;
       color: white;
       border: none;
       cursor: pointer;
@@ -57,7 +58,7 @@
     }
 
     .button {
-      background-color: #007bff;
+      background-color: #007BFF;
       color: white;
       padding: 10px 20px;
       text-decoration: none;
@@ -93,16 +94,17 @@
 </head>
 <body>
 
-  <img src="Ontwerp zonder titel.png" alt="Logo" class="logo" />
+  <!-- Logo -->
+  <img src="Ontwerp zonder titel.png" alt="Logo" class="logo">
 
-  <!-- KahootKL -->
+  <!-- Kahoot Bot Launcher -->
   <div class="section">
-    <h1>KahootKL</h1>
+    <h1>Kahoot Bot Launcher</h1>
     <form id="botForm">
       <input type="text" id="pin" placeholder="Kahoot PIN" required>
-      <input type="text" id="name" placeholder="Bot name (Bot 1, Kleine_Lars)" required>
+      <input type="text" id="name" placeholder="Bot name (e.g. Bot)" required>
       <input type="number" id="count" placeholder="Number of bots" required min="1" max="100">
-      <button type="submit">Send Bots</button>
+      <button type="submit">Launch Bots</button>
     </form>
     <div id="status">
       <p>🟡 Waiting for server connection...</p>
@@ -111,15 +113,15 @@
 
   <!-- Socials -->
   <div class="section">
-    <h1>Follow Me!</h1>
-    <p>Check my Discord and TikTok!</p>
+    <h1>Follow me!</h1>
+    <p>Join my Discord and follow my TikTok!</p>
     <a href="https://discord.gg/TwrZkxMnmP" target="_blank" class="button">My Discord</a>
     <a href="https://www.tiktok.com/@kleine_lars_yt?_t=ZN-8vpZvqUBJbC&_r=1" target="_blank" class="button">My TikTok</a>
   </div>
 
   <!-- Footer -->
   <footer>
-    <p>⚠️ Use with permission only.</p>
+    <p>⚠️ Use only with permission.</p>
   </footer>
 
   <!-- Socket.io script -->
@@ -133,7 +135,7 @@
       statusDiv.innerHTML = "<p>✅ Connected to backend.</p>";
     } catch (e) {
       socket = null;
-      statusDiv.innerHTML = "<p>❌ Socket.io connection not active. Please start your backend!</p>";
+      statusDiv.innerHTML = "<p>❌ Socket.io connection not active. Please start the backend server!</p>";
     }
 
     document.getElementById("botForm").addEventListener("submit", function(e) {
