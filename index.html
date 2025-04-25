@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kahoot Bot Launcher & Socials</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f2f5;
+      padding: 40px;
+      margin: 0;
+      text-align: center;
+    }
+
+    .logo {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 80px;
+      height: auto;
+    }
+
+    .section {
+      max-width: 500px;
+      background: white;
+      padding: 30px;
+      margin: 30px auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background-color: #0069d9;
+    }
+
+    .button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      border-radius: 5px;
+      margin: 10px;
+      transition: 0.3s;
+    }
+
+    .button:hover {
+      background-color: #0069d9;
+    }
+
+    #status {
+      text-align: left;
+      margin-top: 20px;
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 5px;
+      max-height: 300px;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+
+    footer {
+      margin-top: 40px;
+      color: #777;
+      font-size: 14px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <img src="Ontwerp zonder titel.png" alt="Logo" class="logo" />
+
+  <!-- KahootKL -->
+  <div class="section">
+    <h1>KahootKL</h1>
+    <form id="botForm">
+      <input type="text" id="pin" placeholder="Kahoot PIN" required>
+      <input type="text" id="name" placeholder="Bot name (e.g., Bot)" required>
+      <input type="number" id="count" placeholder="Number of bots" required min="1" max="100">
+      <button type="submit">Send Bots</button>
+    </form>
+    <div id="status">
+      <p>🟡 Waiting for server connection...</p>
+    </div>
+  </div>
+
+  <!-- Socials -->
+  <div class="section">
+    <h1>Follow Me!</h1>
+    <p>Check my Discord and TikTok!</p>
+    <a href="https://discord.gg/TwrZkxMnmP" target="_blank" class="button">My Discord</a>
+    <a href="https://www.tiktok.com/@kleine_lars_yt?_t=ZN-8vpZvqUBJbC&_r=1" target="_blank" class="button">My TikTok</a>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>⚠️ Use with permission only.</p>
+  </footer>
+
+  <!-- Socket.io script -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const statusDiv = document.getElementById("status");
+    let socket;
+
+    try {
+      socket = io();
+      statusDiv.innerHTML = "<p>✅ Connected to backend.</p>";
+    } catch (e) {
+      socket = null;
+      statusDiv.innerHTML = "<p>❌ Socket.io connection not active. Please start your backend!</p>";
+    }
+
+    document.getElementById("botForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      if (!socket) {
+        alert("❌ No connection to backend.");
+        return;
+      }
+
+      const pin = document.getElementById("pin").value;
+      const name = document.getElementById("name").value;
+      const count = parseInt(document.getElementById("count").value);
+
+      socket.emit("start-bots", { pin, name, count });
+      statusDiv.innerHTML += `<p>🚀 Sending bots to PIN ${pin}...</p>`;
+    });
+
+    if (socket) {
+      socket.on("bot-status", function(message) {
+        statusDiv.innerHTML += `<p>${message}</p>`;
+      });
+    }
+  </script>
+</body>
+</html>
