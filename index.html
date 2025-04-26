@@ -31,19 +31,19 @@
 
     .topbar {
       display: flex;
-      justify-content: flex-start;
       align-items: center;
-      margin-bottom: 30px;
+      padding: 10px 20px;
     }
 
     .logo {
       height: 40px;
+      margin-right: 20px;
     }
 
     .glitch {
       position: relative;
       display: inline-block;
-      font-size: 24px;
+      font-size: 28px;
       animation: glitch 1s infinite;
       color: black;
     }
@@ -71,11 +71,12 @@
       color: white;
       border: none;
       cursor: pointer;
-      transition: 0.2s;
+      transition: 0.3s;
     }
 
     button:hover {
       background-color: #0056b3;
+      transform: scale(1.05);
     }
 
     button:active {
@@ -106,6 +107,7 @@
 
     .social-button:hover {
       background-color: #0056b3;
+      transform: scale(1.05);
     }
 
     footer {
@@ -115,20 +117,23 @@
       text-align: center;
     }
 
-    /* Popup styling */
-    #followPopup {
-      display: none;
+    .popup {
       position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      text-align: center;
-      z-index: 1000;
-      animation: fadeIn 0.5s ease forwards;
+      top: 20px;
+      right: 20px;
+      background: #28a745;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      font-size: 16px;
+      animation: slideIn 0.5s ease;
+      z-index: 9999;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(100%); }
+      to { opacity: 1; transform: translateX(0); }
     }
   </style>
 </head>
@@ -144,7 +149,7 @@
     <h1 class="glitch">KL Kahoot</h1>
     <form id="botForm">
       <input type="text" id="pin" placeholder="Kahoot PIN (6 digits)" required>
-      <input type="text" id="name" placeholder="Bot name (Bot1, Kleine_Lars)" required>
+      <input type="text" id="name" placeholder="Bot name (e.g. Bot, Little_Lars)" required>
       <input type="number" id="count" placeholder="Number of bots" required min="1" max="100">
       <button type="submit">Launch Bots</button>
     </form>
@@ -164,19 +169,19 @@
     <p>⚠️ Use responsibly.</p>
   </footer>
 
-  <!-- Custom Follow Popup -->
-  <div id="followPopup">
-    <h2>🚀 Follow me!</h2>
-    <p>Join my Discord and TikTok!</p>
-    <a href="https://discord.gg/TwrZkxMnmP" target="_blank" class="social-button">My Discord</a>
-    <a href="https://www.tiktok.com/@kleine_lars_yt?_t=ZN-8vpZvqUBJbC&_r=1" target="_blank" class="social-button">My TikTok</a>
-    <br><br>
-    <button onclick="closeFollowPopup()" style="background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Close</button>
-  </div>
-
   <!-- Confetti.js -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script>
+    function showPopup(message) {
+      const popup = document.createElement("div");
+      popup.className = "popup";
+      popup.innerText = message;
+      document.body.appendChild(popup);
+      setTimeout(() => {
+        popup.remove();
+      }, 3000);
+    }
+
     function updatePreview() {
       const name = document.getElementById("name").value || "Bot";
       const count = parseInt(document.getElementById("count").value || "0");
@@ -197,22 +202,14 @@
       e.preventDefault();
 
       confetti({
-        particleCount: 150,
-        spread: 70,
-        origin: { y: 0.6 }
+        particleCount: 200,
+        spread: 100,
+        origin: { y: 0.6 },
+        colors: ['#00ffea', '#ff00e6', '#f0ff00', '#ff0000']
       });
 
-      alert("✅ Successfully launched bots!");
-
-      // Show follow popup after 3 seconds
-      setTimeout(function() {
-        document.getElementById("followPopup").style.display = "block";
-      }, 3000);
+      showPopup("✅ Bots successfully launched!");
     });
-
-    function closeFollowPopup() {
-      document.getElementById("followPopup").style.display = "none";
-    }
   </script>
 
 </body>
