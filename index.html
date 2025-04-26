@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>KL Kahoot</title>
-  <link rel="icon" type="image/png" href="bdb8c701-4b13-44a9-b926-d6f51b681bc7.png" />
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -20,9 +19,21 @@
       to { opacity: 1; }
     }
 
-    @keyframes slideUp {
-      from { transform: translateY(30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+    @keyframes glitch {
+      0% { transform: none; }
+      20% { transform: skew(0.5deg, 0.5deg); }
+      40% { transform: skew(-0.5deg, -0.5deg); }
+      60% { transform: none; }
+      80% { transform: translate(1px, -1px); }
+      100% { transform: none; }
+    }
+
+    .glitch {
+      position: relative;
+      display: inline-block;
+      font-size: 24px;
+      animation: glitch 1s infinite;
+      color: black;
     }
 
     .section {
@@ -32,12 +43,6 @@
       margin: 30px auto;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      animation: slideUp 1s ease both;
-    }
-
-    h1 {
-      font-size: 24px;
-      margin-bottom: 20px;
     }
 
     input, button {
@@ -114,10 +119,10 @@
 
   <!-- KL Kahoot -->
   <div class="section">
-    <h1>KL Kahoot</h1>
+    <h1 class="glitch">KL Kahoot</h1>
     <form id="botForm">
       <input type="text" id="pin" placeholder="Kahoot PIN (6 cijfers)" required>
-      <input type="text" id="name" placeholder="Bot name (Bot1, Kleine_Lars)" required>
+      <input type="text" id="name" placeholder="Bot name (e.g. Bot)" required>
       <input type="number" id="count" placeholder="Number of bots" required min="1" max="100">
       <button type="submit">Launch Bots</button>
     </form>
@@ -140,6 +145,8 @@
     <p>⚠️ Use with permission only.</p>
   </footer>
 
+  <!-- Confetti.js -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <!-- Socket.io script -->
   <script src="/socket.io/socket.io.js"></script>
   <script>
@@ -154,7 +161,6 @@
       statusDiv.innerHTML = "<p>❌ Socket.io connection not active. Please start your backend!</p>";
     }
 
-    // PIN validatie
     document.getElementById("pin").addEventListener("input", function () {
       const pin = this.value;
       if (!/^\d{6}$/.test(pin)) {
@@ -164,7 +170,6 @@
       }
     });
 
-    // Bot preview + Random namen
     function updatePreview() {
       const name = document.getElementById("name").value || "Bot";
       const count = parseInt(document.getElementById("count").value || "0");
@@ -195,7 +200,23 @@
 
       socket.emit("start-bots", { pin, name, count });
       statusDiv.innerHTML += `<p>🚀 Sending bots to PIN ${pin}...</p>`;
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
     });
+
+    if (socket) {
+      socket.on("bot-status", function(message) {
+        statusDiv.innerHTML += `<p>${message}</p>`;
+      });
+
+      socket.on("bot-disconnected", function(id) {
+        statusDiv.innerHTML += `<p>🔄 Bot disconnected. Attempting reconnect...</p>`;
+        socket.emit("reconnect-bot", id);
+      });
+    }
   </script>
 </body>
 </html>
