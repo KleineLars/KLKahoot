@@ -31,19 +31,19 @@
 
     .topbar {
       display: flex;
-      justify-content: flex-start;
       align-items: center;
-      margin-bottom: 30px;
+      padding: 10px 20px;
     }
 
     .logo {
       height: 40px;
+      margin-right: 20px;
     }
 
     .glitch {
       position: relative;
       display: inline-block;
-      font-size: 24px;
+      font-size: 28px;
       animation: glitch 1s infinite;
       color: black;
     }
@@ -71,11 +71,12 @@
       color: white;
       border: none;
       cursor: pointer;
-      transition: 0.2s;
+      transition: 0.3s;
     }
 
     button:hover {
       background-color: #0056b3;
+      transform: scale(1.05);
     }
 
     button:active {
@@ -106,6 +107,7 @@
 
     .social-button:hover {
       background-color: #0056b3;
+      transform: scale(1.05);
     }
 
     footer {
@@ -113,6 +115,25 @@
       color: #777;
       font-size: 14px;
       text-align: center;
+    }
+
+    .popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #28a745;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      font-size: 16px;
+      animation: slideIn 0.5s ease;
+      z-index: 9999;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(100%); }
+      to { opacity: 1; transform: translateX(0); }
     }
   </style>
 </head>
@@ -151,6 +172,16 @@
   <!-- Confetti.js -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script>
+    function showPopup(message) {
+      const popup = document.createElement("div");
+      popup.className = "popup";
+      popup.innerText = message;
+      document.body.appendChild(popup);
+      setTimeout(() => {
+        popup.remove();
+      }, 3000);
+    }
+
     function updatePreview() {
       const name = document.getElementById("name").value || "Bot";
       const count = parseInt(document.getElementById("count").value || "0");
@@ -171,12 +202,13 @@
       e.preventDefault();
 
       confetti({
-        particleCount: 150,
-        spread: 70,
-        origin: { y: 0.6 }
+        particleCount: 200,
+        spread: 100,
+        origin: { y: 0.6 },
+        colors: ['#00ffea', '#ff00e6', '#f0ff00', '#ff0000']
       });
 
-      alert("✅ Successfully launched bots!");
+      showPopup("✅ Bots successfully launched!");
     });
   </script>
 
