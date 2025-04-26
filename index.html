@@ -4,34 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>KL Kahoot</title>
-  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="icon" href="logo.png" type="image/png">
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
       background: white;
       margin: 0;
-      padding-top: 80px;
+      padding: 40px;
       text-align: center;
       opacity: 0;
       animation: fadeIn 1.5s ease forwards;
-    }
-
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 60px;
-      background: white;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      display: flex;
-      align-items: center;
-      padding: 0 20px;
-      z-index: 1000;
-    }
-
-    .logo {
-      height: 40px;
     }
 
     @keyframes fadeIn {
@@ -45,6 +27,17 @@
       60% { transform: none; }
       80% { transform: translate(1px, -1px); }
       100% { transform: none; }
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      height: 40px;
     }
 
     .glitch {
@@ -89,7 +82,17 @@
       transform: scale(0.97);
     }
 
-    .button {
+    #preview {
+      margin-top: 20px;
+      text-align: left;
+      background: #f1f1f1;
+      padding: 15px;
+      border-radius: 8px;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+
+    .social-button {
       background-color: #007bff;
       color: white;
       padding: 10px 20px;
@@ -101,29 +104,8 @@
       transition: 0.3s;
     }
 
-    .button:hover {
+    .social-button:hover {
       background-color: #0056b3;
-    }
-
-    #status {
-      text-align: left;
-      margin-top: 20px;
-      background: #f8f9fa;
-      padding: 15px;
-      border-radius: 5px;
-      max-height: 300px;
-      overflow-y: auto;
-      font-size: 14px;
-    }
-
-    #preview {
-      margin-top: 20px;
-      text-align: left;
-      background: #f1f1f1;
-      padding: 15px;
-      border-radius: 8px;
-      max-height: 150px;
-      overflow-y: auto;
     }
 
     footer {
@@ -136,64 +118,39 @@
 </head>
 <body>
 
-  <!-- Logo Header -->
-  <header>
-    <img src="logo.png" alt="KL Kahoot Logo" class="logo">
-  </header>
+  <!-- Topbar -->
+  <div class="topbar">
+    <img src="logo.png" alt="Logo" class="logo">
+  </div>
 
-  <!-- KL Kahoot -->
+  <!-- Main Section -->
   <div class="section">
     <h1 class="glitch">KL Kahoot</h1>
     <form id="botForm">
-      <input type="text" id="pin" placeholder="Kahoot PIN (6 cijfers)" required>
-      <input type="text" id="name" placeholder="Bot name (Bot, Kleine_Lars)" required>
+      <input type="text" id="pin" placeholder="Kahoot PIN (6 digits)" required>
+      <input type="text" id="name" placeholder="Bot name (e.g. Bot, Little_Lars)" required>
       <input type="number" id="count" placeholder="Number of bots" required min="1" max="100">
       <button type="submit">Launch Bots</button>
     </form>
     <div id="preview"><strong>Bot preview:</strong><br></div>
-    <div id="status">
-      <p>🟡 Waiting for backend connection...</p>
-    </div>
   </div>
 
-  <!-- Socials -->
+  <!-- Social Section -->
   <div class="section">
     <h1>Follow me!</h1>
     <p>Join my Discord and TikTok!</p>
-    <a href="https://discord.gg/TwrZkxMnmP" target="_blank" class="button">My Discord</a>
-    <a href="https://www.tiktok.com/@kleine_lars_yt?_t=ZN-8vpZvqUBJbC&_r=1" target="_blank" class="button">My TikTok</a>
+    <a href="https://discord.gg/TwrZkxMnmP" target="_blank" class="social-button">My Discord</a>
+    <a href="https://www.tiktok.com/@kleine_lars_yt?_t=ZN-8vpZvqUBJbC&_r=1" target="_blank" class="social-button">My TikTok</a>
   </div>
 
   <!-- Footer -->
   <footer>
-    <p>⚠️ Use with permission only.</p>
+    <p>⚠️ Use responsibly.</p>
   </footer>
 
   <!-- Confetti.js -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-  <!-- Socket.io script -->
-  <script src="/socket.io/socket.io.js"></script>
   <script>
-    const statusDiv = document.getElementById("status");
-    let socket;
-
-    try {
-      socket = io();
-      statusDiv.innerHTML = "<p>✅ Connected to backend.</p>";
-    } catch (e) {
-      socket = null;
-      statusDiv.innerHTML = "<p>❌ Socket.io connection not active. Please start your backend!</p>";
-    }
-
-    document.getElementById("pin").addEventListener("input", function () {
-      const pin = this.value;
-      if (!/^\d{6}$/.test(pin)) {
-        this.style.border = "2px solid red";
-      } else {
-        this.style.border = "2px solid green";
-      }
-    });
-
     function updatePreview() {
       const name = document.getElementById("name").value || "Bot";
       const count = parseInt(document.getElementById("count").value || "0");
@@ -213,34 +170,15 @@
     document.getElementById("botForm").addEventListener("submit", function(e) {
       e.preventDefault();
 
-      if (!socket) {
-        alert("❌ No connection to backend.");
-        return;
-      }
-
-      const pin = document.getElementById("pin").value;
-      const name = document.getElementById("name").value;
-      const count = parseInt(document.getElementById("count").value);
-
-      socket.emit("start-bots", { pin, name, count });
-      statusDiv.innerHTML += `<p>🚀 Sending bots to PIN ${pin}...</p>`;
       confetti({
-        particleCount: 100,
+        particleCount: 150,
         spread: 70,
         origin: { y: 0.6 }
       });
+
+      alert("✅ Successfully launched bots! (This is just a demo 😁)");
     });
-
-    if (socket) {
-      socket.on("bot-status", function(message) {
-        statusDiv.innerHTML += `<p>${message}</p>`;
-      });
-
-      socket.on("bot-disconnected", function(id) {
-        statusDiv.innerHTML += `<p>🔄 Bot disconnected. Attempting reconnect...</p>`;
-        socket.emit("reconnect-bot", id);
-      });
-    }
   </script>
+
 </body>
 </html>
