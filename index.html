@@ -26,7 +26,6 @@
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       display: flex;
       align-items: center;
-      justify-content: space-between;
       padding: 0 20px;
       z-index: 1000;
     }
@@ -35,167 +34,213 @@
       height: 40px;
     }
 
-    .login-btn {
-      font-size: 16px;
-      border: none;
-      background-color: #007bff;
-      color: white;
-      padding: 8px 15px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .login-btn:hover {
-      background-color: #0056b3;
-    }
-
-    .pfp {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .pfp img {
-      height: 40px;
-      width: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      cursor: pointer;
-    }
-
-    .pfp span {
-      font-weight: bold;
-      font-size: 16px;
-    }
-
-    .popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      z-index: 2000;
-      display: none;
-      text-align: left;
-      width: 300px;
-    }
-
-    .popup input {
-      width: 100%;
-      padding: 8px;
-      margin: 10px 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    .popup button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      background-color: #28a745;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .popup button:hover {
-      background-color: #218838;
-    }
-
-    #overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      display: none;
-      z-index: 1500;
-    }
-
     @keyframes fadeIn {
       to { opacity: 1; }
     }
 
-    /* Je andere CSS hier (glitch effect, buttons, etc.) */
+    @keyframes glitch {
+      0% { transform: none; }
+      20% { transform: skew(0.5deg, 0.5deg); }
+      40% { transform: skew(-0.5deg, -0.5deg); }
+      60% { transform: none; }
+      80% { transform: translate(1px, -1px); }
+      100% { transform: none; }
+    }
+
+    .glitch {
+      position: relative;
+      display: inline-block;
+      font-size: 24px;
+      animation: glitch 1s infinite;
+      color: black;
+    }
+
+    .section {
+      max-width: 500px;
+      background: white;
+      padding: 30px;
+      margin: 30px auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    .button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      border-radius: 5px;
+      margin: 10px;
+      transition: 0.3s;
+    }
+
+    .button:hover {
+      background-color: #0056b3;
+    }
+
+    #status {
+      text-align: left;
+      margin-top: 20px;
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 5px;
+      max-height: 300px;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+
+    #preview {
+      margin-top: 20px;
+      text-align: left;
+      background: #f1f1f1;
+      padding: 15px;
+      border-radius: 8px;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+
+    footer {
+      margin-top: 40px;
+      color: #777;
+      font-size: 14px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
 
-<!-- Overlay -->
-<div id="overlay"></div>
+  <!-- Logo Header -->
+  <header>
+    <img src="logo.png" alt="KL Kahoot Logo" class="logo">
+  </header>
 
-<!-- Popup login venster -->
-<div class="popup" id="loginPopup">
-  <h2>Login</h2>
-  <input type="text" id="usernameInput" placeholder="Gebruikersnaam" required>
-  <input type="file" id="pfpInput" accept="image/*">
-  <button id="submitLogin">Inloggen</button>
-</div>
-
-<!-- Header met logo en login/pfp -->
-<header>
-  <img src="logo.png" alt="KL Kahoot Logo" class="logo">
-  <button class="login-btn" id="loginBtn">Login</button>
-  <div class="pfp" id="userPfp" style="display: none;">
-    <img id="pfpImg" src="pfp.png" alt="Profile">
-    <span id="usernameDisplay"></span>
+  <!-- KL Kahoot -->
+  <div class="section">
+    <h1 class="glitch">KL Kahoot</h1>
+    <form id="botForm">
+      <input type="text" id="pin" placeholder="Kahoot PIN (6 cijfers)" required>
+      <input type="text" id="name" placeholder="Bot name (Bot, Kleine_Lars)" required>
+      <input type="number" id="count" placeholder="Number of bots" required min="1" max="100">
+      <button type="submit">Launch Bots</button>
+    </form>
+    <div id="preview"><strong>Bot preview:</strong><br></div>
+    <div id="status">
+      <p>🟡 Waiting for backend connection...</p>
+    </div>
   </div>
-</header>
 
-<!-- Je bestaande content hier -->
+  <!-- Socials -->
+  <div class="section">
+    <h1>Follow me!</h1>
+    <p>Join my Discord and TikTok!</p>
+    <a href="https://discord.gg/TwrZkxMnmP" target="_blank" class="button">My Discord</a>
+    <a href="https://www.tiktok.com/@kleine_lars_yt?_t=ZN-8vpZvqUBJbC&_r=1" target="_blank" class="button">My TikTok</a>
+  </div>
 
-<script>
-  const loginBtn = document.getElementById('loginBtn');
-  const loginPopup = document.getElementById('loginPopup');
-  const overlay = document.getElementById('overlay');
-  const submitLogin = document.getElementById('submitLogin');
-  const userPfp = document.getElementById('userPfp');
-  const pfpImg = document.getElementById('pfpImg');
-  const usernameDisplay = document.getElementById('usernameDisplay');
-  const usernameInput = document.getElementById('usernameInput');
-  const pfpInput = document.getElementById('pfpInput');
+  <!-- Footer -->
+  <footer>
+    <p>⚠️ Use with permission only.</p>
+  </footer>
 
-  loginBtn.addEventListener('click', () => {
-    loginPopup.style.display = 'block';
-    overlay.style.display = 'block';
-  });
+  <!-- Confetti.js -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <!-- Socket.io script -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const statusDiv = document.getElementById("status");
+    let socket;
 
-  submitLogin.addEventListener('click', () => {
-    const username = usernameInput.value.trim();
-    const file = pfpInput.files[0];
-
-    if (!username) {
-      alert("Vul je gebruikersnaam in!");
-      return;
+    try {
+      socket = io();
+      statusDiv.innerHTML = "<p>✅ Connected to backend.</p>";
+    } catch (e) {
+      socket = null;
+      statusDiv.innerHTML = "<p>❌ Socket.io connection not active. Please start your backend!</p>";
     }
 
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        pfpImg.src = e.target.result;
+    document.getElementById("pin").addEventListener("input", function () {
+      const pin = this.value;
+      if (!/^\d{6}$/.test(pin)) {
+        this.style.border = "2px solid red";
+      } else {
+        this.style.border = "2px solid green";
       }
-      reader.readAsDataURL(file);
+    });
+
+    function updatePreview() {
+      const name = document.getElementById("name").value || "Bot";
+      const count = parseInt(document.getElementById("count").value || "0");
+      let preview = "<strong>Bot preview:</strong><br>";
+      for (let i = 1; i <= Math.min(count, 10); i++) {
+        preview += name + i + "<br>";
+      }
+      if (count > 10) {
+        preview += "... +" + (count - 10) + " more";
+      }
+      document.getElementById("preview").innerHTML = preview;
     }
 
-    usernameDisplay.textContent = username;
-    loginPopup.style.display = 'none';
-    overlay.style.display = 'none';
-    loginBtn.style.display = 'none';
-    userPfp.style.display = 'flex';
-  });
+    document.getElementById("name").addEventListener("input", updatePreview);
+    document.getElementById("count").addEventListener("input", updatePreview);
 
-  overlay.addEventListener('click', () => {
-    loginPopup.style.display = 'none';
-    overlay.style.display = 'none';
-  });
-</script>
+    document.getElementById("botForm").addEventListener("submit", function(e) {
+      e.preventDefault();
 
+      if (!socket) {
+        alert("❌ No connection to backend.");
+        return;
+      }
+
+      const pin = document.getElementById("pin").value;
+      const name = document.getElementById("name").value;
+      const count = parseInt(document.getElementById("count").value);
+
+      socket.emit("start-bots", { pin, name, count });
+      statusDiv.innerHTML += `<p>🚀 Sending bots to PIN ${pin}...</p>`;
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    });
+
+    if (socket) {
+      socket.on("bot-status", function(message) {
+        statusDiv.innerHTML += `<p>${message}</p>`;
+      });
+
+      socket.on("bot-disconnected", function(id) {
+        statusDiv.innerHTML += `<p>🔄 Bot disconnected. Attempting reconnect...</p>`;
+        socket.emit("reconnect-bot", id);
+      });
+    }
+  </script>
 </body>
 </html>
