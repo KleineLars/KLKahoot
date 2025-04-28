@@ -12,12 +12,33 @@
       margin: 0;
       padding: 40px;
       text-align: center;
-      opacity: 0;
-      animation: fadeIn 1.5s ease forwards;
+      transition: background 0.5s, color 0.5s;
+    }
+
+    body.night {
+      background: #121212;
+      color: white;
     }
 
     @keyframes fadeIn {
       to { opacity: 1; }
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+    }
+
+    .logo {
+      height: 40px;
+    }
+
+    .glitch {
+      font-size: 28px;
+      animation: glitch 1s infinite;
+      color: inherit;
     }
 
     @keyframes glitch {
@@ -29,32 +50,20 @@
       100% { transform: none; }
     }
 
-    .topbar {
-      display: flex;
-      align-items: center;
-      padding: 10px 20px;
-    }
-
-    .logo {
-      height: 40px;
-      margin-right: 20px;
-    }
-
-    .glitch {
-      position: relative;
-      display: inline-block;
-      font-size: 28px;
-      animation: glitch 1s infinite;
-      color: black;
-    }
-
     .section {
       max-width: 500px;
       background: white;
+      color: black;
       padding: 30px;
       margin: 30px auto;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: background 0.5s, color 0.5s;
+    }
+
+    body.night .section {
+      background: #1e1e1e;
+      color: white;
     }
 
     input, button {
@@ -64,6 +73,7 @@
       font-size: 16px;
       border-radius: 5px;
       border: 1px solid #ccc;
+      transition: 0.3s;
     }
 
     button {
@@ -71,7 +81,6 @@
       color: white;
       border: none;
       cursor: pointer;
-      transition: 0.3s;
     }
 
     button:hover {
@@ -102,19 +111,10 @@
       font-size: 16px;
       border-radius: 5px;
       margin: 10px;
-      transition: 0.3s;
     }
 
     .social-button:hover {
       background-color: #0056b3;
-      transform: scale(1.05);
-    }
-
-    footer {
-      margin-top: 40px;
-      color: #777;
-      font-size: 14px;
-      text-align: center;
     }
 
     .popup {
@@ -124,25 +124,21 @@
       background: white;
       color: black;
       padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      font-size: 16px;
-      animation: slideIn 0.5s ease;
-      z-index: 9999;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       text-align: center;
+      z-index: 9999;
+      animation: slideIn 0.5s ease;
     }
 
     .popup a {
-      display: inline-block;
-      margin-top: 10px;
+      display: block;
+      margin: 10px 0;
       background: #007bff;
       color: white;
-      padding: 8px 12px;
+      padding: 10px;
       border-radius: 5px;
       text-decoration: none;
-      font-weight: bold;
-      margin: 5px;
-      transition: 0.3s;
     }
 
     .popup a:hover {
@@ -153,16 +149,30 @@
       from { opacity: 0; transform: translateX(100%); }
       to { opacity: 1; transform: translateX(0); }
     }
+
+    .toggle-btn {
+      background: none;
+      border: 2px solid #007bff;
+      color: #007bff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .toggle-btn:hover {
+      background: #007bff;
+      color: white;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Topbar -->
   <div class="topbar">
     <img src="logo.png" alt="Logo" class="logo">
+    <button class="toggle-btn" onclick="toggleNightMode()">🌙 Toggle Mode</button>
   </div>
 
-  <!-- Main Section -->
   <div class="section">
     <h1 class="glitch">KL Kahoot</h1>
     <form id="botForm">
@@ -174,48 +184,51 @@
     <div id="preview"><strong>Bot preview:</strong><br></div>
   </div>
 
-  <!-- Social Section -->
+  <div class="section">
+    <h1>Download Manual</h1>
+    <a href="https://youtube.com/yourtutoriallink" target="_blank" class="social-button">📄 Watch Tutorial</a>
+  </div>
+
   <div class="section">
     <h1>Follow me!</h1>
-    <p>Join my Discord and TikTok!</p>
-    <a href="https://discord.gg/TwrZkxMnmP" target="_blank" class="social-button">My Discord</a>
-    <a href="https://www.tiktok.com/@kleine_lars_yt?_t=ZN-8vpZvqUBJbC&_r=1" target="_blank" class="social-button">My TikTok</a>
+    <a href="https://discord.gg/TwrZkxMnmP" target="_blank" class="social-button">Discord</a>
+    <a href="https://www.tiktok.com/@kleine_lars_yt?_t=ZN-8vpZvqUBJbC&_r=1" target="_blank" class="social-button">TikTok</a>
   </div>
 
-  <!-- Download Guide Section -->
-  <div class="section">
-    <h1>Need Help?</h1>
-    <p>Download the tutorial guide with the video link!</p>
-    <a href="guide.txt" download="KLKahoot_Guide.txt" class="social-button">📄 Download Guide</a>
-  </div>
-
-  <!-- Footer -->
   <footer>
-    <p>⚠️ Use responsibly. Don't use it to annoy others.</p>
+    <p>⚠️ Use responsibly. Do not spam games.</p>
   </footer>
 
-  <!-- Confetti.js -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script>
-    function showPopup(message, withLinks = false) {
+    function showPopup() {
       const popup = document.createElement("div");
       popup.className = "popup";
-      popup.innerHTML = message;
-
-      if (withLinks) {
-        popup.innerHTML += `
-          <br>
-          <a href="https://discord.gg/TwrZkxMnmP" target="_blank">Discord</a>
-          <a href="https://www.tiktok.com/@kleine_lars_yt?_t=ZN-8vpZvqUBJbC&_r=1" target="_blank">TikTok</a>
-        `;
-      }
-
+      popup.innerHTML = `
+        <p>Follow me on Discord & TikTok!</p>
+        <a href="https://discord.gg/TwrZkxMnmP" target="_blank">Join Discord</a>
+        <a href="https://www.tiktok.com/@kleine_lars_yt?_t=ZN-8vpZvqUBJbC&_r=1" target="_blank">Follow TikTok</a>
+      `;
       document.body.appendChild(popup);
-
       setTimeout(() => {
         popup.remove();
       }, 5000);
     }
+
+    function toggleNightMode() {
+      document.body.classList.toggle('night');
+    }
+
+    document.getElementById("botForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      confetti({
+        particleCount: 200,
+        spread: 100,
+        origin: { y: 0.6 },
+        colors: ['#00ffea', '#ff00e6', '#f0ff00', '#ff0000']
+      });
+      showPopup();
+    });
 
     function updatePreview() {
       const name = document.getElementById("name").value || "Bot";
@@ -232,26 +245,6 @@
 
     document.getElementById("name").addEventListener("input", updatePreview);
     document.getElementById("count").addEventListener("input", updatePreview);
-
-    document.getElementById("botForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      confetti({
-        particleCount: 200,
-        spread: 100,
-        origin: { y: 0.6 },
-        colors: ['#00ffea', '#ff00e6', '#f0ff00', '#ff0000']
-      });
-
-      showPopup("✅ Bots successfully launched!");
-    });
-
-    // Auto popup after 3 seconds with links
-    window.addEventListener("load", function() {
-      setTimeout(function() {
-        showPopup("🚀 Follow me!", true);
-      }, 3000);
-    });
   </script>
 
 </body>
