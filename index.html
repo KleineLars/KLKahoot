@@ -123,12 +123,29 @@
       right: 20px;
       background: #28a745;
       color: white;
-      padding: 15px 20px;
+      padding: 20px;
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
       font-size: 16px;
       animation: slideIn 0.5s ease;
       z-index: 9999;
+      text-align: center;
+    }
+
+    .popup a {
+      display: inline-block;
+      margin-top: 10px;
+      background: white;
+      color: #28a745;
+      padding: 8px 12px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .popup a:hover {
+      background: #e0e0e0;
     }
 
     @keyframes slideIn {
@@ -179,14 +196,23 @@
   <!-- Confetti.js -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script>
-    function showPopup(message) {
+    function showPopup(message, withLinks = false) {
       const popup = document.createElement("div");
       popup.className = "popup";
-      popup.innerText = message;
+      popup.innerHTML = message;
+
+      if (withLinks) {
+        popup.innerHTML += `
+          <br><a href="https://discord.gg/TwrZkxMnmP" target="_blank">Discord</a>
+          <a href="https://www.tiktok.com/@kleine_lars_yt?_t=ZN-8vpZvqUBJbC&_r=1" target="_blank">TikTok</a>
+        `;
+      }
+
       document.body.appendChild(popup);
+
       setTimeout(() => {
         popup.remove();
-      }, 3000);
+      }, 5000); // blijft 5 seconden
     }
 
     function updatePreview() {
@@ -216,6 +242,13 @@
       });
 
       showPopup("✅ Bots successfully launched!");
+    });
+
+    // Auto popup after 3 seconds with links
+    window.addEventListener("load", function() {
+      setTimeout(function() {
+        showPopup("🚀 Follow me!", true);
+      }, 3000);
     });
   </script>
 
