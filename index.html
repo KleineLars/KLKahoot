@@ -117,7 +117,7 @@
       text-align: center;
     }
 
-    /* POPUP Styling algemeen */
+    /* POPUP Styling */
     .popup {
       position: fixed;
       top: 20px;
@@ -132,13 +132,11 @@
       text-align: center;
     }
 
-    /* Speciaal voor de bot launched popup */
     .popup-success {
       background: #28a745; /* Groen */
       color: white;
     }
 
-    /* Speciaal voor de follow popup */
     .popup-follow {
       background: white;
       color: black;
@@ -260,7 +258,11 @@
       });
 
       showPopup("✅ Bots successfully launched!", "popup-success");
-      setTimeout(showFollowPopup, 2000); // 2 seconden later de Follow popup
+    });
+
+    // Follow popup tonen 3 seconden na paginalaad
+    window.addEventListener('load', () => {
+      setTimeout(showFollowPopup, 3000);
     });
   </script>
 
