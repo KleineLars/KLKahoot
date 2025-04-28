@@ -1,0 +1,14 @@
+📚 KL Kahoot Bot Guide
+
+Step 1: Open the website:
+https://kleinelars.github.io/KLKahoot/
+
+Step 2: Enter your Kahoot PIN, bot name, and number of bots.
+
+Step 3: Press "Launch Bots" and enjoy!
+
+🎥 Tutorial Video:
+https://www.youtube.com/watch?v=5Lbd-RyDsAo
+
+⚠️ Use responsibly! 
+This tool is for fun only.
