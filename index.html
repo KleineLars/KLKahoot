@@ -75,10 +75,6 @@
       transform: scale(1.05);
     }
 
-    button:active {
-      transform: scale(0.97);
-    }
-
     #preview {
       margin-top: 20px;
       text-align: left;
@@ -87,29 +83,6 @@
       border-radius: 8px;
       max-height: 150px;
       overflow-y: auto;
-    }
-
-    .popup {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #28a745;
-      color: white;
-      padding: 15px 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      font-size: 16px;
-      z-index: 9999;
-      animation: slideIn 0.5s ease, slideOut 0.5s ease 2.5s forwards;
-    }
-
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateX(100%); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-
-    @keyframes slideOut {
-      to { opacity: 0; transform: translateX(100%); }
     }
 
     .info-buttons {
@@ -132,6 +105,49 @@
     .info-buttons a:hover {
       background-color: #0056b3;
       transform: scale(1.05);
+    }
+
+    .popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: white;
+      color: #333;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 9999;
+      animation: slideIn 0.5s ease, slideOut 0.5s ease 5s forwards;
+      min-width: 220px;
+      text-align: center;
+    }
+
+    .popup h3 {
+      margin: 0 0 10px;
+    }
+
+    .popup a {
+      display: inline-block;
+      margin: 5px;
+      padding: 8px 12px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .popup a:hover {
+      background-color: #0056b3;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(100%); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideOut {
+      to { opacity: 0; transform: translateX(100%); }
     }
 
     footer {
@@ -175,22 +191,28 @@
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script>
-    function showPopup(message, color = '#28a745', textColor = 'white') {
+    function showBotPopup(message) {
       const popup = document.createElement("div");
       popup.className = "popup";
-      popup.innerText = message;
-      popup.style.background = color;
-      popup.style.color = textColor;
+      popup.style.background = "#28a745";
+      popup.style.color = "white";
+      popup.textContent = message;
       document.body.appendChild(popup);
-      setTimeout(() => {
-        popup.remove();
-      }, 3000);
+      setTimeout(() => popup.remove(), 3000);
     }
 
-    // Show welcome popup after 3 seconds
+    // Volg mij popup na 3 seconden
     window.addEventListener("load", () => {
       setTimeout(() => {
-        showPopup("👋 Follow me on Discord and TikTok!", "white", "#007bff");
+        const popup = document.createElement("div");
+        popup.className = "popup";
+        popup.innerHTML = `
+          <h3>👋 Follow me</h3>
+          <a href="https://discord.com" target="_blank">Discord</a>
+          <a href="https://www.tiktok.com" target="_blank">TikTok</a>
+        `;
+        document.body.appendChild(popup);
+        setTimeout(() => popup.remove(), 5500);
       }, 3000);
     });
 
@@ -220,7 +242,7 @@
         colors: ['#00ffea', '#ff00e6', '#f0ff00', '#ff0000']
       });
 
-      showPopup("✅ Bots successfully launched!", "#28a745", "white");
+      showBotPopup("✅ Bots successfully launched!");
     });
   </script>
 
