@@ -57,13 +57,16 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
-    input, button {
+    input, button, a.tutorial {
       width: 100%;
       padding: 10px;
       margin: 10px 0;
       font-size: 16px;
       border-radius: 5px;
       border: 1px solid #ccc;
+      display: inline-block;
+      text-decoration: none;
+      text-align: center;
     }
 
     button {
@@ -117,29 +120,29 @@
       text-align: center;
     }
 
-    /* POPUP Styling */
     .popup {
       position: fixed;
       top: 20px;
       right: 20px;
-      padding: 20px;
+      background: white;
+      color: black;
+      padding: 15px 20px;
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
       font-size: 16px;
-      animation: slideIn 0.5s ease, fadeOut 0.5s ease 4.5s forwards;
+      animation: slideIn 0.5s ease, fadeOut 0.5s ease 4.5s;
       z-index: 9999;
-      max-width: 300px;
-      text-align: center;
     }
 
-    .popup-success {
-      background: #28a745; /* Groen */
+    .popup a {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 14px;
+      background-color: #007bff;
       color: white;
-    }
-
-    .popup-follow {
-      background: white;
-      color: black;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 14px;
     }
 
     @keyframes slideIn {
@@ -148,27 +151,7 @@
     }
 
     @keyframes fadeOut {
-      from { opacity: 1; transform: translateX(0); }
       to { opacity: 0; transform: translateX(100%); }
-    }
-
-    .popup-button {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      margin: 10px 5px 0 5px;
-      border-radius: 5px;
-      font-size: 14px;
-      cursor: pointer;
-      display: inline-block;
-      text-decoration: none;
-      transition: background-color 0.3s, transform 0.3s;
-    }
-
-    .popup-button:hover {
-      background-color: #0056b3;
-      transform: scale(1.05);
     }
   </style>
 </head>
@@ -188,6 +171,8 @@
       <input type="number" id="count" placeholder="Number of bots" required min="1" max="100">
       <button type="submit">Launch Bots</button>
     </form>
+    <a href="KL_Kahoot_Guide_EN.pdf" download class="tutorial">📄 Download PDF Guide</a>
+    <a href="https://www.youtube.com/watch?v=5Lbd-RyDsAo" target="_blank" class="tutorial">▶️ Watch Tutorial</a>
     <div id="preview"><strong>Bot preview:</strong><br></div>
   </div>
 
@@ -204,31 +189,19 @@
     <p>⚠️ Use responsibly.</p>
   </footer>
 
-  <!-- Confetti.js -->
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script>
-    function showPopup(message, type) {
+    function showPopup(message, color = "#28a745", textColor = "white") {
       const popup = document.createElement("div");
-      popup.className = "popup " + type;
+      popup.className = "popup";
+      popup.style.background = color;
+      popup.style.color = textColor;
       popup.innerText = message;
       document.body.appendChild(popup);
       setTimeout(() => {
         popup.remove();
-      }, 5000);
-    }
-
-    function showFollowPopup() {
-      const popup = document.createElement("div");
-      popup.className = "popup popup-follow";
-      popup.innerHTML = `
-        <strong>Follow me!</strong><br><br>
-        <a href="https://discord.gg/TwrZkxMnmP" target="_blank" class="popup-button">Discord</a>
-        <a href="https://www.tiktok.com/@kleine_lars_yt?_t=ZN-8vpZvqUBJbC&_r=1" target="_blank" class="popup-button">TikTok</a>
-      `;
-      document.body.appendChild(popup);
-      setTimeout(() => {
-        popup.remove();
-      }, 5000);
+      }, 3000);
     }
 
     function updatePreview() {
@@ -249,20 +222,28 @@
 
     document.getElementById("botForm").addEventListener("submit", function(e) {
       e.preventDefault();
-
       confetti({
         particleCount: 200,
         spread: 100,
         origin: { y: 0.6 },
         colors: ['#00ffea', '#ff00e6', '#f0ff00', '#ff0000']
       });
-
-      showPopup("✅ Bots successfully launched!", "popup-success");
+      showPopup("✅ Bots successfully launched!");
     });
 
-    // Follow popup tonen 3 seconden na paginalaad
-    window.addEventListener('load', () => {
-      setTimeout(showFollowPopup, 3000);
+    // Show "Follow me" popup after 3 seconds
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        const popup = document.createElement("div");
+        popup.className = "popup";
+        popup.innerHTML = `✨ Follow me on socials!<br>
+          <a href="https://discord.gg/TwrZkxMnmP" target="_blank">Discord</a>
+          <a href="https://www.tiktok.com/@kleine_lars_yt?_t=ZN-8vpZvqUBJbC&_r=1" target="_blank">TikTok</a>`;
+        document.body.appendChild(popup);
+        setTimeout(() => {
+          popup.remove();
+        }, 5000);
+      }, 3000);
     });
   </script>
 
