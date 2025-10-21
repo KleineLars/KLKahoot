@@ -8,55 +8,37 @@
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: white;
+      background: #ffffff;
       margin: 0;
       padding: 40px;
       text-align: center;
-      opacity: 0;
-      animation: fadeIn 1.5s ease forwards;
-    }
-
-    @keyframes fadeIn {
-      to { opacity: 1; }
     }
 
     .topbar {
       display: flex;
       align-items: center;
-      padding: 10px 20px;
+      justify-content: center;
+      margin-bottom: 20px;
     }
 
     .logo {
-      height: 40px;
-      margin-right: 20px;
+      height: 50px;
     }
 
-    .glitch {
-      font-size: 28px;
-      color: black;
-      animation: glitch 1s infinite;
-    }
-
-    @keyframes glitch {
-      0%, 100% { transform: none; }
-      20% { transform: skew(0.5deg, 0.5deg); }
-      40% { transform: skew(-0.5deg, -0.5deg); }
-      80% { transform: translate(1px, -1px); }
-    }
-
-    .section {
+    .container {
       max-width: 500px;
+      margin: auto;
       background: white;
       padding: 30px;
-      margin: 30px auto;
       border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
     }
 
     input, button {
       width: 100%;
       padding: 10px;
-      margin: 10px 0;
+      margin: 8px 0;
       font-size: 16px;
       border-radius: 5px;
       border: 1px solid #ccc;
@@ -75,36 +57,10 @@
       transform: scale(1.05);
     }
 
-    #preview {
-      margin-top: 20px;
-      text-align: left;
-      background: #f1f1f1;
-      padding: 15px;
-      border-radius: 8px;
-      max-height: 150px;
-      overflow-y: auto;
-    }
-
-    .info-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 20px;
-    }
-
-    .info-buttons a {
-      padding: 12px 20px;
-      background-color: #007bff;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
+    #status {
+      margin-top: 15px;
       font-weight: bold;
-      transition: 0.3s;
-    }
-
-    .info-buttons a:hover {
-      background-color: #0056b3;
-      transform: scale(1.05);
+      color: #333;
     }
 
     .popup {
@@ -120,10 +76,6 @@
       animation: slideIn 0.5s ease, slideOut 0.5s ease 5s forwards;
       min-width: 220px;
       text-align: center;
-    }
-
-    .popup h3 {
-      margin: 0 0 10px;
     }
 
     .popup a {
@@ -152,99 +104,71 @@
 
     footer {
       margin-top: 40px;
-      color: #777;
       font-size: 14px;
-      text-align: center;
+      color: #777;
     }
   </style>
 </head>
 <body>
-
-  <!-- Topbar -->
   <div class="topbar">
     <img src="logo.png" alt="Logo" class="logo">
   </div>
 
-  <!-- Main Section -->
-  <div class="section">
-    <h1 class="glitch">KL Kahoot</h1>
-    <form id="botForm">
-      <input type="text" id="pin" placeholder="Kahoot PIN" required>
-      <input type="text" id="name" placeholder="Bot name" required>
-      <input type="number" id="count" placeholder="Number of bots" required min="1" max="100">
-      <button type="submit">Launch Bots</button>
-    </form>
-    <div id="preview"><strong>Bot preview:</strong><br></div>
+  <div class="container">
+    <h1>KL Kahoot</h1>
+    <p>Enter the Kahoot details below:</p>
+    <input id="pin" type="text" placeholder="Kahoot PIN" required>
+    <input id="name" type="text" placeholder="Bot name (e.g. Bot)" required>
+    <input id="count" type="number" placeholder="Number of bots" min="1" max="100" required>
+    <button onclick="sendBots()">Launch Bots</button>
+    <p id="status"></p>
   </div>
 
-  <!-- Info Buttons -->
-  <div class="info-buttons">
-    <a href="uitleg.pdf" download>📄 Download Guide</a>
-    <a href="https://www.youtube.com/watch?v=5Lbd-RyDsAo" target="_blank">▶️ Watch Tutorial</a>
-  </div>
-
-  <!-- Footer -->
   <footer>
-    <p>⚠️ Use responsibly.</p>
+    <p>⚠️ Use responsibly — for educational purposes only.</p>
   </footer>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script>
-    function showBotPopup(message) {
-      const popup = document.createElement("div");
-      popup.className = "popup";
-      popup.style.background = "#28a745";
-      popup.style.color = "white";
-      popup.textContent = message;
-      document.body.appendChild(popup);
-      setTimeout(() => popup.remove(), 3000);
-    }
-
-    // Volg mij popup na 3 seconden
+    // Popup "Follow me" verschijnt na 3 seconden
     window.addEventListener("load", () => {
       setTimeout(() => {
         const popup = document.createElement("div");
         popup.className = "popup";
         popup.innerHTML = `
           <h3>👋 Follow me</h3>
-          <a href="https://discord.com" target="_blank">Discord</a>
-          <a href="https://www.tiktok.com" target="_blank">TikTok</a>
+          <a href="https://discord.gg/TwrZkxMnmP" target="_blank">Discord</a>
+          <a href="https://www.tiktok.com/@kleine_lars_yt?_t=ZN-8vpZvqUBJbC&_r=1" target="_blank">TikTok</a>
         `;
         document.body.appendChild(popup);
         setTimeout(() => popup.remove(), 5500);
       }, 3000);
     });
 
-    function updatePreview() {
-      const name = document.getElementById("name").value || "Bot";
-      const count = parseInt(document.getElementById("count").value || "0");
-      let preview = "<strong>Bot preview:</strong><br>";
-      for (let i = 1; i <= Math.min(count, 10); i++) {
-        preview += name + i + "<br>";
+    // Stuur data naar backend
+    async function sendBots() {
+      const pin = document.getElementById("pin").value;
+      const name = document.getElementById("name").value;
+      const count = document.getElementById("count").value;
+      const status = document.getElementById("status");
+
+      if (!pin || !name || !count) {
+        status.innerText = "❌ Please fill in all fields!";
+        return;
       }
-      if (count > 10) {
-        preview += "... +" + (count - 10) + " more";
+
+      try {
+        const response = await fetch("https://<jouw-replit-link>.repl.co/sendBots", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ pin, name, count })
+        });
+
+        const text = await response.text();
+        status.innerText = text;
+      } catch (err) {
+        status.innerText = "❌ Could not connect to the backend.";
       }
-      document.getElementById("preview").innerHTML = preview;
     }
-
-    document.getElementById("name").addEventListener("input", updatePreview);
-    document.getElementById("count").addEventListener("input", updatePreview);
-
-    document.getElementById("botForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      confetti({
-        particleCount: 200,
-        spread: 100,
-        origin: { y: 0.6 },
-        colors: ['#00ffea', '#ff00e6', '#f0ff00', '#ff0000']
-      });
-
-      showBotPopup("✅ Bots successfully launched!");
-    });
   </script>
-
 </body>
 </html>
